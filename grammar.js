@@ -149,7 +149,11 @@ module.exports = grammar({
     ...preprocIf('', $ => $._block_item),
     ...preprocIf('_in_field_declaration_list', $ => $._field_declaration_list_item),
 
-    preproc_arg: _ => token(prec(-1, /\S([^/\n]|\/[^*]|\\\r?\n)*/)),
+
+    preproc_arg: $ => prec(-1, 
+        seq(token(/\\\r?\n|\S/), repeat(choice($.comment, token(/[^/\n]|\/[^*]|\\\r?\n/))))
+      ),
+
     preproc_directive: _ => /#[ \t]*[a-zA-Z0-9]\w*/,
 
     _preproc_expression: $ => choice(
@@ -1237,15 +1241,15 @@ module.exports = grammar({
       ')',
     )),
 
-    // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
-    comment: _ => token(choice(
-      seq('//', /(\\+(.|\r?\n)|[^\\\n])*/),
-      seq(
-        '/*',
-        /[^*]*\*+([^/*][^*]*\*+)*/,
-        '/',
-      ),
-    )),
+        // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
+        comment: _ => token(choice(
+          seq('//', /(\\+(.|\r?\n)|[^\\\n])*/),
+          seq(
+            '/*',
+            /[^*]*\*+([^/*][^*]*\*+)*/,
+            '/',
+          ),
+        )),
   },
 
   supertypes: $ => [

@@ -285,10 +285,10 @@ module.exports = grammar({
     ),
 
     attribute_specifier: $ => seq(
-      '__attribute__',
-      '(',
-      $.argument_list,
-      ')',
+      choice(
+        seq('__attribute__','(',$.argument_list,')'),
+        seq(choice('__scanf', '__printf'), '(', commaSep($.number_literal), ')'),
+      ),
     ),
 
     attribute: $ => seq(
@@ -1237,15 +1237,15 @@ module.exports = grammar({
       ')',
     )),
 
-    // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
-    comment: _ => token(choice(
-      seq('//', /(\\+(.|\r?\n)|[^\\\n])*/),
-      seq(
-        '/*',
-        /[^*]*\*+([^/*][^*]*\*+)*/,
-        '/',
-      ),
-    )),
+        // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
+        comment: _ => token(choice(
+          seq('//', /(\\+(.|\r?\n)|[^\\\n])*/),
+          seq(
+            '/*',
+            /[^*]*\*+([^/*][^*]*\*+)*/,
+            '/',
+          ),
+        )),
   },
 
   supertypes: $ => [

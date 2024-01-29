@@ -525,7 +525,7 @@ module.exports = grammar({
       '__thread',
     ),
 
-    type_qualifier: _ => choice(
+    type_qualifier: $ => choice(
       'const',
       'constexpr',
       'volatile',
@@ -535,6 +535,7 @@ module.exports = grammar({
       '_Atomic',
       '_Noreturn',
       'noreturn',
+      seq('__aligned', '(', choice($.identifier, $.number_literal), ')'),
     ),
 
     _type_specifier: $ => choice(

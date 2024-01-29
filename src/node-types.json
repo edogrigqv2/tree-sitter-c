@@ -3636,7 +3636,21 @@
   {
     "type": "type_qualifier",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "number_literal",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "unary_expression",
@@ -4039,6 +4053,10 @@
   },
   {
     "type": "_Noreturn",
+    "named": false
+  },
+  {
+    "type": "__aligned",
     "named": false
   },
   {
